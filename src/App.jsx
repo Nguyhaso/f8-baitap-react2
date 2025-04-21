@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import TodoItem from './components/task'
 
 function App() {
     const[list, setList] = useState([])
@@ -7,10 +8,11 @@ function App() {
 
     const addTask =() =>{
         if(todo === "") return
-        const newList = [...list]
-        newList.push(todo)
-        setList(newList)
-        console.log(list)
+        if(list.includes(todo)){
+            alert('Task already exists!')
+            return
+        }
+        setList([...list, todo])
         setTodo('')
     }
 
@@ -31,10 +33,12 @@ function App() {
             <button onClick={addTask}>Add</button>
             <ul>
                 {list.map((task,index) =>(
-                    <li key={index}>
-                        {task}
-                        <button onClick={() =>{deleteTask(index)}}>Delete</button></li>
-                ))}
+                    <TodoItem
+                    key={index}
+                    task={{text:task}}
+                    onDelete={() => deleteTask(index)}
+                    />
+                     ))}
             </ul>
         </div>
     );
